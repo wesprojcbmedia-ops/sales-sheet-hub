@@ -10,8 +10,1023 @@
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#f6f3ed" />
     <title>Sales Sheet Hub</title>
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiMxNTVmNDUiLz4KICA8cmVjdCB4PSIxMyIgeT0iMTQiIHdpZHRoPSIzOCIgaGVpZ2h0PSIzNiIgcng9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPHBhdGggZD0iTTEzIDI2aDM4TTI2IDE0djM2TTM5IDE0djM2IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIvPgo8L3N2Zz4K" type="image/svg+xml" />
+    <style>
+:root {
+  color-scheme: light;
+  --canvas: #f6f3ed;
+  --surface: #ffffff;
+  --surface-soft: #fbfaf7;
+  --ink: #17211d;
+  --muted: #5d6862;
+  --line: #dfe4df;
+  --line-strong: #ccd4cd;
+  --accent: #155f45;
+  --accent-deep: #0d4733;
+  --accent-soft: #dceee5;
+  --orange: #db7b38;
+  --blue: #3477a8;
+  --gold: #bd8a18;
+  --danger: #b44536;
+  --shadow-sm: 0 1px 2px rgb(31 45 38 / 5%), 0 4px 14px rgb(31 45 38 / 5%);
+  --shadow-lg: 0 22px 70px rgb(25 39 32 / 20%);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent-deep);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 50;
+  transform: translateY(-150%);
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px clamp(18px, 3.5vw, 52px);
+  border-bottom: 1px solid var(--line);
+  background: rgb(246 243 237 / 92%);
+  backdrop-filter: blur(14px);
+}
+
+.brand,
+.header-actions,
+.sheet-actions,
+.active-sheet-meta,
+.footer-actions {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 14%), 0 5px 16px rgb(21 95 69 / 18%);
+}
+
+.brand-mark svg {
+  width: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.55;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.brand small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.header-actions {
+  gap: 16px;
+}
+
+.save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #54a27d;
+  box-shadow: 0 0 0 4px #e0f0e8;
+}
+
+.button,
+.icon-button,
+.close-button,
+.remove-sheet-button,
+.add-sheet-button,
+.text-button {
+  border: 0;
+  cursor: pointer;
+}
+
+.button {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button svg,
+.icon-button svg {
+  width: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.button-secondary {
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.button-secondary:hover {
+  border-color: #b5c0b7;
+  background: #fdfdfb;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 5px 15px rgb(21 95 69 / 18%);
+}
+
+.button-primary:hover {
+  background: var(--accent-deep);
+}
+
+.button.is-disabled {
+  pointer-events: none;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.sheet-navigation {
+  padding: 0 clamp(18px, 3.5vw, 52px);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.tab-scroller {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.sheet-tab {
+  position: relative;
+  min-width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 15px 17px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sheet-tab::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: -1px;
+  left: 12px;
+  height: 3px;
+  transform: scaleX(0);
+  border-radius: 5px 5px 0 0;
+  background: var(--accent);
+  transition: transform 180ms ease;
+}
+
+.sheet-tab:hover {
+  color: var(--ink);
+}
+
+.sheet-tab[aria-selected="true"] {
+  color: var(--accent-deep);
+}
+
+.sheet-tab[aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+.tab-icon {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  background: var(--tab-color, var(--accent));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tab-color, var(--accent)) 14%, white);
+}
+
+.main-area {
+  padding: 20px clamp(18px, 3.5vw, 52px) 18px;
+}
+
+.is-focus-mode .topbar,
+.is-focus-mode .sheet-navigation {
+  display: none;
+}
+
+.is-focus-mode .main-area {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  background: var(--canvas);
+}
+
+.is-focus-mode .sheet-toolbar {
+  flex: 0 0 auto;
+}
+
+.is-focus-mode .viewer-frame {
+  min-height: 0;
+  height: auto;
+  flex: 1 1 auto;
+}
+
+.is-focus-mode .viewer-note {
+  display: none;
+}
+
+.sheet-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.active-sheet-meta {
+  min-width: 0;
+  flex: 1 1 auto;
+  gap: 11px;
+}
+
+.active-sheet-meta > div {
+  min-width: 0;
+}
+
+.active-indicator {
+  width: 4px;
+  height: 38px;
+  border-radius: 6px;
+  background: var(--accent);
+}
+
+.eyebrow {
+  margin: 0 0 1px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.active-sheet-meta h1 {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 2.4vw, 27px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.sheet-actions {
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.icon-button {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.icon-button:hover:not(:disabled) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.icon-button:disabled {
+  cursor: default;
+  opacity: 0.36;
+}
+
+.viewer-frame {
+  position: relative;
+  height: calc(100vh - 238px);
+  height: calc(100dvh - 238px);
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 13px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-stack,
+.sheet-panel,
+.sheet-iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.sheet-panel[hidden] {
+  display: none;
+}
+
+.sheet-iframe {
+  display: block;
+  border: 0;
+  background: #fff;
+}
+
+.empty-state {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  background:
+    radial-gradient(circle at 20% 12%, rgb(220 238 229 / 62%), transparent 33%),
+    linear-gradient(135deg, #fbfaf6 0%, #f7f5ef 100%);
+}
+
+.empty-card {
+  width: min(520px, 100%);
+  padding: clamp(28px, 5vw, 46px);
+  border: 1px solid rgb(204 212 205 / 78%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 84%);
+  box-shadow: 0 22px 50px rgb(40 55 47 / 9%);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.empty-illustration {
+  position: relative;
+  width: 78px;
+  height: 67px;
+  margin: 0 auto 24px;
+}
+
+.empty-sheet {
+  position: absolute;
+  width: 50px;
+  height: 58px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 9px 22px rgb(21 95 69 / 15%);
+}
+
+.empty-sheet::before,
+.empty-sheet::after {
+  content: "";
+  position: absolute;
+  top: 13px;
+  right: 7px;
+  left: 7px;
+  height: 1px;
+  background: #b7d8c8;
+  box-shadow: 0 9px 0 #b7d8c8, 0 18px 0 #b7d8c8, 0 27px 0 #b7d8c8;
+}
+
+.empty-sheet::after {
+  top: 7px;
+  right: auto;
+  bottom: 7px;
+  left: 17px;
+  width: 1px;
+  height: auto;
+  box-shadow: 14px 0 0 #b7d8c8;
+}
+
+.empty-sheet:first-child {
+  top: 7px;
+  left: 0;
+  transform: rotate(-7deg);
+}
+
+.empty-sheet:last-child {
+  top: 0;
+  right: 0;
+  transform: rotate(7deg);
+}
+
+.empty-card h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(25px, 4vw, 34px);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+}
+
+.empty-card > p {
+  max-width: 390px;
+  margin: 13px auto 23px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.empty-help {
+  margin-top: 15px !important;
+  font-size: 11px !important;
+}
+
+.viewer-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 10px 1px 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.viewer-note strong {
+  color: var(--ink);
+}
+
+.keyboard-hint {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+kbd {
+  min-width: 21px;
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.settings-dialog {
+  width: min(860px, calc(100% - 28px));
+  height: min(760px, calc(100dvh - 28px));
+  max-height: min(760px, calc(100vh - 28px));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: var(--surface-soft);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+
+.settings-dialog::backdrop {
+  background: rgb(14 27 21 / 52%);
+  backdrop-filter: blur(3px);
+}
+
+.settings-dialog form {
+  height: 100%;
+  max-height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 27px 30px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.dialog-header h2 {
+  margin: 3px 0 5px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+
+.dialog-header p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.close-button,
+.remove-sheet-button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.close-button {
+  width: 36px;
+  height: 36px;
+}
+
+.close-button:hover,
+.remove-sheet-button:hover {
+  background: #f0f2ee;
+  color: var(--ink);
+}
+
+.close-button svg,
+.remove-sheet-button svg {
+  width: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.provider-note {
+  display: flex;
+  gap: 10px;
+  margin: 18px 30px 0;
+  padding: 12px 14px;
+  border: 1px solid #cfe2d7;
+  border-radius: 10px;
+  background: #edf6f1;
+  color: #285642;
+}
+
+.provider-note svg {
+  width: 18px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.provider-note p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.sheet-editor-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 13px 30px 2px;
+  overflow-y: auto;
+}
+
+.sheet-editor-row {
+  display: grid;
+  grid-template-columns: 24px minmax(120px, 0.75fr) minmax(230px, 1.8fr) 36px;
+  align-items: end;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.row-index {
+  align-self: center;
+  width: 21px;
+  height: 21px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf0ec;
+  color: #748078;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.field {
+  min-width: 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.field input {
+  width: 100%;
+  height: 41px;
+  padding: 8px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.field input:hover {
+  border-color: #aab6ac;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(21 95 69 / 11%);
+  outline: 0;
+}
+
+.field input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.field-error {
+  min-height: 15px;
+  display: block;
+  padding-top: 2px;
+  color: var(--danger);
+  font-size: 10px;
+}
+
+.remove-sheet-button {
+  width: 36px;
+  height: 41px;
+  margin-bottom: 15px;
+}
+
+.add-sheet-button {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 13px 30px 19px;
+  padding: 7px 2px;
+  background: transparent;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.add-sheet-button span {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.add-sheet-button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 30px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.footer-actions {
+  gap: 9px;
+}
+
+.text-button {
+  padding: 8px 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.danger-text {
+  color: var(--danger);
+}
+
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  max-width: min(380px, calc(100% - 44px));
+  padding: 11px 15px;
+  transform: translateY(18px);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 10px;
+  background: #17211d;
+  color: #fff;
+  box-shadow: 0 12px 34px rgb(12 24 18 / 23%);
+  font-size: 12px;
+  font-weight: 650;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.toast.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    min-height: 68px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .brand small,
+  .save-status {
+    display: none;
+  }
+
+  #settings-button {
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  #settings-button svg {
+    width: 19px;
+  }
+
+  .sheet-navigation {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  .sheet-tab {
+    padding: 13px 12px 12px;
+  }
+
+  .main-area {
+    padding: 14px 0 0;
+  }
+
+  .is-focus-mode .main-area {
+    padding: 14px 0 0;
+  }
+
+  .sheet-toolbar {
+    align-items: flex-end;
+    margin-bottom: 12px;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .action-label {
+    display: none;
+  }
+
+  .icon-button {
+    width: 40px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  #open-sheet-link {
+    min-width: 44px;
+    padding: 0 11px;
+    font-size: 0;
+  }
+
+  #open-sheet-link svg {
+    width: 19px;
+  }
+
+  .viewer-frame {
+    height: calc(100vh - 216px);
+    height: calc(100dvh - 216px);
+    min-height: 390px;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .viewer-note {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .keyboard-hint {
+    display: none;
+  }
+
+  .dialog-header,
+  .dialog-footer {
+    padding-right: 19px;
+    padding-left: 19px;
+  }
+
+  .provider-note {
+    margin-right: 19px;
+    margin-left: 19px;
+  }
+
+  .sheet-editor-list {
+    padding-right: 19px;
+    padding-left: 19px;
+  }
+
+  .sheet-editor-row {
+    grid-template-columns: 18px 1fr 36px;
+  }
+
+  .url-field {
+    grid-column: 2 / 3;
+  }
+
+  .remove-sheet-button {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: center;
+    margin: 0;
+  }
+
+  .add-sheet-button {
+    margin-left: 19px;
+  }
+
+  .dialog-footer {
+    align-items: flex-end;
+  }
+
+  .footer-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 470px) {
+  .brand strong {
+    font-size: 17px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .empty-state {
+    padding: 15px;
+  }
+
+  .empty-card {
+    padding: 28px 19px;
+  }
+
+  .settings-dialog {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 10px);
+    margin: auto 0 0;
+    height: calc(100dvh - 10px);
+    overflow: hidden;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .dialog-header h2 {
+    font-size: 24px;
+  }
+
+  .dialog-footer {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .text-button {
+    align-self: flex-start;
+  }
+
+  .footer-actions {
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+    </style>
   </head>
   <body>
     <a class="skip-link" href="#sheet-workspace">Skip to spreadsheet</a>
@@ -156,6 +1171,469 @@
       </div>
     </template>
 
-    <script src="./app.js"></script>
+    <script>
+(() => {
+  "use strict";
+
+  const STORAGE_KEY = "sales-sheet-hub:config:v1";
+  const ACTIVE_KEY = "sales-sheet-hub:active:v1";
+  const MAX_SHEETS = 8;
+  const COLORS = ["#155f45", "#db7b38", "#3477a8", "#bd8a18", "#8056a7", "#b94e64", "#328b88", "#677076"];
+  const DEFAULT_SHEETS = [
+    { name: "Pricing", url: "" },
+    { name: "Inventory", url: "" },
+    { name: "Shipping", url: "" },
+    { name: "Orders", url: "" },
+  ];
+
+  let storageHealthy = true;
+
+  function storageGet(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      storageHealthy = false;
+      return null;
+    }
+  }
+
+  function storageSet(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch {
+      storageHealthy = false;
+      return false;
+    }
+  }
+
+  const elements = {
+    tabs: document.querySelector("#sheet-tabs"),
+    panels: document.querySelector("#sheet-panels"),
+    activeName: document.querySelector("#active-sheet-name"),
+    activeIndicator: document.querySelector("#active-indicator"),
+    openLink: document.querySelector("#open-sheet-link"),
+    reloadButton: document.querySelector("#reload-button"),
+    fullscreenButton: document.querySelector("#fullscreen-button"),
+    viewerFrame: document.querySelector("#viewer-frame"),
+    settingsButton: document.querySelector("#settings-button"),
+    dialog: document.querySelector("#settings-dialog"),
+    closeDialogButton: document.querySelector("#close-dialog-button"),
+    form: document.querySelector("#settings-form"),
+    editorList: document.querySelector("#sheet-editor-list"),
+    rowTemplate: document.querySelector("#sheet-row-template"),
+    addSheetButton: document.querySelector("#add-sheet-button"),
+    resetButton: document.querySelector("#reset-button"),
+    toast: document.querySelector("#toast"),
+    saveStatus: document.querySelector("#save-status"),
+  };
+
+  let sheets = loadStoredSheets();
+  let activeIndex = clampActiveIndex(Number.parseInt(storageGet(ACTIVE_KEY) || "0", 10));
+  let draftSheets = [];
+  let toastTimer;
+
+  function sanitizeSheets(value) {
+    if (!Array.isArray(value)) return null;
+
+    const sanitized = value.slice(0, MAX_SHEETS).map((item, index) => ({
+      name: String(item?.name || `Sheet ${index + 1}`).trim().slice(0, 28) || `Sheet ${index + 1}`,
+      url: String(item?.url || "").trim().slice(0, 6000),
+    }));
+
+    return sanitized.length ? sanitized : null;
+  }
+
+  function loadStoredSheets() {
+    try {
+      return sanitizeSheets(JSON.parse(storageGet(STORAGE_KEY))) || structuredClone(DEFAULT_SHEETS);
+    } catch {
+      return structuredClone(DEFAULT_SHEETS);
+    }
+  }
+
+  function clampActiveIndex(index) {
+    if (!Number.isFinite(index)) return 0;
+    return Math.min(Math.max(index, 0), Math.max(sheets.length - 1, 0));
+  }
+
+  function decodeHtmlAttribute(value) {
+    return value
+      .replace(/&amp;/gi, "&")
+      .replace(/&#0*38;/gi, "&")
+      .replace(/&#x0*26;/gi, "&")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#0*39;/gi, "'");
+  }
+
+  function isMicrosoftWorkbookHost(hostname) {
+    const host = hostname.toLowerCase();
+    return host === "1drv.ms"
+      || host === "onedrive.live.com"
+      || host === "excel.cloud.microsoft"
+      || host.endsWith(".sharepoint.com")
+      || host.endsWith(".officeapps.live.com");
+  }
+
+  function extractWorkbookUrl(value) {
+    const trimmed = String(value || "").trim();
+    if (!trimmed) return "";
+
+    const iframeSource = trimmed.match(/<iframe\b[^>]*\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)')[^>]*>/i);
+    const candidate = decodeHtmlAttribute(iframeSource?.[1] || iframeSource?.[2] || trimmed);
+
+    try {
+      const url = new URL(candidate);
+      return url.protocol === "https:" && isMicrosoftWorkbookHost(url.hostname) ? url.toString() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function isValidUrl(value) {
+    return !value || Boolean(extractWorkbookUrl(value));
+  }
+
+  function normalizeEmbedUrl(value) {
+    if (!value) return "";
+
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+
+    if (host === "onedrive.live.com" && url.pathname !== "/embed" && url.searchParams.has("resid")) {
+      const embed = new URL("https://onedrive.live.com/embed");
+      ["resid", "authkey", "cid"].forEach((key) => {
+        const parameter = url.searchParams.get(key);
+        if (parameter) embed.searchParams.set(key, parameter);
+      });
+      embed.searchParams.set("em", "2");
+      return embed.toString();
+    }
+
+    if (host.endsWith(".sharepoint.com") && /\/_layouts\/15\/(?:guestaccess|Doc)\.aspx$/i.test(url.pathname)) {
+      url.searchParams.set("action", "embedview");
+      return url.toString();
+    }
+
+    return url.toString();
+  }
+
+  function escapeHtml(value) {
+    return value.replace(/[&<>'"]/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#039;",
+      '"': "&quot;",
+    })[character]);
+  }
+
+  function emptyStateMarkup(sheet) {
+    return `
+      <div class="empty-state">
+        <div class="empty-card">
+          <div class="empty-illustration" aria-hidden="true">
+            <span class="empty-sheet"></span>
+            <span class="empty-sheet"></span>
+          </div>
+          <p class="eyebrow">One quick setup</p>
+          <h2>Add your ${escapeHtml(sheet.name)} workbook</h2>
+          <p>Paste the shared Excel, OneDrive, or SharePoint link and this tab will become your focused, everyday view.</p>
+          <div class="empty-actions">
+            <button class="button button-primary configure-empty-button" type="button">Add Excel link</button>
+          </div>
+          <p class="empty-help">Your workbook links are stored only in this browser.</p>
+        </div>
+      </div>`;
+  }
+
+  function renderWorkspace() {
+    elements.tabs.replaceChildren();
+    elements.panels.replaceChildren();
+
+    sheets.forEach((sheet, index) => {
+      const color = COLORS[index % COLORS.length];
+      const tab = document.createElement("button");
+      tab.className = "sheet-tab";
+      tab.type = "button";
+      tab.id = `sheet-tab-${index}`;
+      tab.role = "tab";
+      tab.setAttribute("aria-selected", String(index === activeIndex));
+      tab.setAttribute("aria-controls", `sheet-panel-${index}`);
+      tab.tabIndex = index === activeIndex ? 0 : -1;
+      tab.innerHTML = `<span class="tab-icon" style="--tab-color: ${color}" aria-hidden="true"></span><span>${escapeHtml(sheet.name)}</span>`;
+      tab.addEventListener("click", () => activateSheet(index));
+      tab.addEventListener("keydown", handleTabKeydown);
+      elements.tabs.append(tab);
+
+      const panel = document.createElement("div");
+      panel.className = "sheet-panel";
+      panel.id = `sheet-panel-${index}`;
+      panel.role = "tabpanel";
+      panel.setAttribute("aria-labelledby", tab.id);
+      panel.hidden = index !== activeIndex;
+
+      if (sheet.url && isValidUrl(sheet.url)) {
+        const iframe = document.createElement("iframe");
+        iframe.className = "sheet-iframe";
+        iframe.title = `${sheet.name} Excel workbook`;
+        iframe.loading = index === activeIndex ? "eager" : "lazy";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.allow = "clipboard-write; fullscreen";
+        iframe.dataset.src = normalizeEmbedUrl(sheet.url);
+        if (index === activeIndex) iframe.src = iframe.dataset.src;
+        panel.append(iframe);
+      } else {
+        panel.innerHTML = emptyStateMarkup(sheet);
+        panel.querySelector(".configure-empty-button").addEventListener("click", openSettings);
+      }
+
+      elements.panels.append(panel);
+    });
+
+    updateActiveChrome();
+  }
+
+  function updateActiveChrome() {
+    const sheet = sheets[activeIndex] || sheets[0];
+    if (!sheet) return;
+
+    const color = COLORS[activeIndex % COLORS.length];
+    elements.activeName.textContent = sheet.name;
+    elements.activeIndicator.style.backgroundColor = color;
+
+    const hasUrl = Boolean(sheet.url && isValidUrl(sheet.url));
+    elements.openLink.href = hasUrl ? sheet.url : "#";
+    elements.openLink.classList.toggle("is-disabled", !hasUrl);
+    elements.openLink.setAttribute("aria-disabled", String(!hasUrl));
+    elements.reloadButton.disabled = !hasUrl;
+  }
+
+  function activateSheet(index, { focusTab = false } = {}) {
+    activeIndex = clampActiveIndex(index);
+    storageSet(ACTIVE_KEY, String(activeIndex));
+
+    [...elements.tabs.children].forEach((tab, tabIndex) => {
+      const isActive = tabIndex === activeIndex;
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+
+    [...elements.panels.children].forEach((panel, panelIndex) => {
+      const isActive = panelIndex === activeIndex;
+      panel.hidden = !isActive;
+      if (isActive) {
+        const iframe = panel.querySelector("iframe[data-src]");
+        if (iframe && !iframe.hasAttribute("src")) iframe.src = iframe.dataset.src;
+      }
+    });
+
+    updateActiveChrome();
+
+    const selectedTab = elements.tabs.children[activeIndex];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    selectedTab?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest", inline: "nearest" });
+    if (focusTab) selectedTab?.focus();
+  }
+
+  function handleTabKeydown(event) {
+    const current = [...elements.tabs.children].indexOf(event.currentTarget);
+    let target = null;
+
+    if (event.key === "ArrowRight") target = (current + 1) % sheets.length;
+    if (event.key === "ArrowLeft") target = (current - 1 + sheets.length) % sheets.length;
+    if (event.key === "Home") target = 0;
+    if (event.key === "End") target = sheets.length - 1;
+
+    if (target !== null) {
+      event.preventDefault();
+      activateSheet(target, { focusTab: true });
+    }
+  }
+
+  function renderEditor() {
+    elements.editorList.replaceChildren();
+
+    draftSheets.forEach((sheet, index) => {
+      const row = elements.rowTemplate.content.firstElementChild.cloneNode(true);
+      const nameInput = row.querySelector(".sheet-name-input");
+      const urlInput = row.querySelector(".sheet-url-input");
+      const removeButton = row.querySelector(".remove-sheet-button");
+      const fieldError = row.querySelector(".field-error");
+      row.querySelector(".row-index").textContent = String(index + 1);
+
+      nameInput.value = sheet.name;
+      urlInput.value = sheet.url;
+      nameInput.setAttribute("aria-label", `Tab ${index + 1} name`);
+      urlInput.setAttribute("aria-label", `Tab ${index + 1} Excel or SharePoint link`);
+      fieldError.id = `sheet-url-error-${index}`;
+      urlInput.setAttribute("aria-describedby", fieldError.id);
+      removeButton.setAttribute("aria-label", `Remove ${sheet.name || `sheet ${index + 1}`}`);
+
+      nameInput.addEventListener("input", () => {
+        draftSheets[index].name = nameInput.value;
+        removeButton.setAttribute("aria-label", `Remove ${nameInput.value || `sheet ${index + 1}`}`);
+      });
+
+      urlInput.addEventListener("input", () => {
+        draftSheets[index].url = urlInput.value.trim();
+        clearFieldError(urlInput);
+      });
+
+      removeButton.addEventListener("click", () => {
+        const removedName = draftSheets[index].name || `Sheet ${index + 1}`;
+        if (draftSheets.length === 1) {
+          draftSheets[0] = { name: "Pricing", url: "" };
+        } else {
+          draftSheets.splice(index, 1);
+        }
+        renderEditor();
+        const nextIndex = Math.min(index, draftSheets.length - 1);
+        elements.editorList.children[nextIndex]?.querySelector(".sheet-name-input")?.focus();
+        showToast(`${removedName} removed from this draft.`);
+      });
+
+      elements.editorList.append(row);
+    });
+
+    elements.addSheetButton.disabled = draftSheets.length >= MAX_SHEETS;
+  }
+
+  function openSettings() {
+    draftSheets = structuredClone(sheets);
+    renderEditor();
+    elements.dialog.showModal();
+    window.setTimeout(() => elements.editorList.querySelector(".sheet-url-input")?.focus(), 50);
+  }
+
+  function closeSettings() {
+    elements.dialog.close();
+  }
+
+  function clearFieldError(input) {
+    input.removeAttribute("aria-invalid");
+    input.closest(".field").querySelector(".field-error").textContent = "";
+  }
+
+  function validateDraft() {
+    let valid = true;
+    const rows = [...elements.editorList.querySelectorAll(".sheet-editor-row")];
+
+    rows.forEach((row, index) => {
+      const urlInput = row.querySelector(".sheet-url-input");
+      const nameInput = row.querySelector(".sheet-name-input");
+      clearFieldError(urlInput);
+
+      draftSheets[index].name = nameInput.value.trim() || `Sheet ${index + 1}`;
+      const rawUrl = urlInput.value.trim();
+      draftSheets[index].url = rawUrl;
+
+      const extractedUrl = extractWorkbookUrl(rawUrl);
+      if (rawUrl && !extractedUrl) {
+        valid = false;
+        urlInput.setAttribute("aria-invalid", "true");
+        row.querySelector(".field-error").textContent = "Use a Microsoft Excel, OneDrive, or SharePoint https:// link—or paste Microsoft’s iframe embed code.";
+      } else {
+        draftSheets[index].url = extractedUrl || "";
+      }
+    });
+
+    if (!valid) elements.editorList.querySelector('[aria-invalid="true"]')?.focus();
+    return valid;
+  }
+
+  function saveDraft() {
+    if (!validateDraft()) return false;
+
+    sheets = sanitizeSheets(draftSheets) || structuredClone(DEFAULT_SHEETS);
+    activeIndex = clampActiveIndex(activeIndex);
+    const saved = storageSet(STORAGE_KEY, JSON.stringify(sheets)) && storageSet(ACTIVE_KEY, String(activeIndex));
+    renderWorkspace();
+    elements.saveStatus.innerHTML = saved
+      ? '<span class="status-dot" aria-hidden="true"></span> Saved in this browser'
+      : '<span class="status-dot" aria-hidden="true"></span> Saved for this visit';
+    showToast(saved ? "Workbook tabs saved." : "Saved for this visit. Browser storage is unavailable.");
+    return true;
+  }
+
+  function showToast(message) {
+    window.clearTimeout(toastTimer);
+    elements.toast.textContent = message;
+    elements.toast.classList.add("is-visible");
+    toastTimer = window.setTimeout(() => elements.toast.classList.remove("is-visible"), 3200);
+  }
+
+  elements.settingsButton.addEventListener("click", openSettings);
+  elements.closeDialogButton.addEventListener("click", closeSettings);
+
+  elements.form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (saveDraft()) closeSettings();
+  });
+
+  elements.addSheetButton.addEventListener("click", () => {
+    if (draftSheets.length >= MAX_SHEETS) return;
+    draftSheets.push({ name: `Sheet ${draftSheets.length + 1}`, url: "" });
+    renderEditor();
+    elements.editorList.lastElementChild?.querySelector(".sheet-name-input")?.select();
+  });
+
+  elements.resetButton.addEventListener("click", () => {
+    draftSheets = structuredClone(DEFAULT_SHEETS);
+    renderEditor();
+    showToast("Default tabs restored. Save changes to keep them.");
+  });
+
+  elements.reloadButton.addEventListener("click", () => {
+    const iframe = elements.panels.children[activeIndex]?.querySelector("iframe");
+    if (iframe) {
+      iframe.src = iframe.dataset.src;
+      showToast(`${sheets[activeIndex].name} reloaded.`);
+    }
+  });
+
+  elements.fullscreenButton.addEventListener("click", () => {
+    const isFocused = document.body.classList.toggle("is-focus-mode");
+    elements.fullscreenButton.querySelector(".action-label").textContent = isFocused ? "Exit" : "Focus";
+    elements.fullscreenButton.title = isFocused ? "Exit focus mode" : "Focus mode";
+    elements.fullscreenButton.setAttribute("aria-pressed", String(isFocused));
+  });
+
+  elements.openLink.addEventListener("click", (event) => {
+    if (elements.openLink.classList.contains("is-disabled")) event.preventDefault();
+  });
+
+  elements.dialog.addEventListener("click", (event) => {
+    if (event.target === elements.dialog) closeSettings();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.body.classList.contains("is-focus-mode")) {
+      document.body.classList.remove("is-focus-mode");
+      elements.fullscreenButton.querySelector(".action-label").textContent = "Focus";
+      elements.fullscreenButton.title = "Focus mode";
+      elements.fullscreenButton.setAttribute("aria-pressed", "false");
+      elements.fullscreenButton.focus();
+      return;
+    }
+
+    if (elements.dialog.open) return;
+    if (event.altKey && /^[1-8]$/.test(event.key)) {
+      const target = Number(event.key) - 1;
+      if (target < sheets.length) {
+        event.preventDefault();
+        activateSheet(target, { focusTab: true });
+      }
+    }
+  });
+
+  renderWorkspace();
+
+  if (!storageHealthy) {
+    elements.saveStatus.innerHTML = '<span class="status-dot" aria-hidden="true"></span> Saved for this visit';
+  }
+})();
+
+    </script>
   </body>
 </html>
